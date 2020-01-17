@@ -50,13 +50,13 @@ agent_params.memory.max_size = (MemoryGranularity.Transitions, 10**5)
 ###############
 # Environment #
 ###############
-DeepRacerInputFilter = InputFilter(is_a_reference_filter=True)
-DeepRacerInputFilter.add_observation_filter('observation', 'to_grayscale', ObservationRGBToYFilter())
-DeepRacerInputFilter.add_observation_filter('observation', 'to_uint8', ObservationToUInt8Filter(0, 255))
-DeepRacerInputFilter.add_observation_filter('observation', 'stacking', ObservationStackingFilter(1))
+DeepRotorInputFilter = InputFilter(is_a_reference_filter=True)
+DeepRotorInputFilter.add_observation_filter('observation', 'to_grayscale', ObservationRGBToYFilter())
+DeepRotorInputFilter.add_observation_filter('observation', 'to_uint8', ObservationToUInt8Filter(0, 255))
+DeepRotorInputFilter.add_observation_filter('observation', 'stacking', ObservationStackingFilter(1))
 
 env_params = GymVectorEnvironment()
-env_params.default_input_filter = DeepRacerInputFilter
+env_params.default_input_filter = DeepRotorInputFilter
 env_params.level = 'RoboMaker-DeepRotor-v0'
 
 vis_params = VisualizationParameters()

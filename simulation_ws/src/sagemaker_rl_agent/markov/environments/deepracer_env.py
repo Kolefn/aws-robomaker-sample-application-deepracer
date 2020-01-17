@@ -47,7 +47,7 @@ SLEEP_BETWEEN_ACTION_AND_REWARD_CALCULATION_TIME_IN_SECOND = 0.1
 SLEEP_WAITING_FOR_IMAGE_TIME_IN_SECOND = 0.01
 
 ### Gym Env ###
-class DeepRacerEnv(gym.Env):
+class DeepRotorEnv(gym.Env):
     def __init__(self):
 
         screen_height = TRAINING_IMAGE_SIZE[1]
@@ -244,7 +244,7 @@ class DeepRacerEnv(gym.Env):
         cloudwatch_client.put_metric_data(
             MetricData=[
                 {
-                    'MetricName': 'DeepRacerRewardPerEpisode',
+                    'MetricName': 'DeepRotorRewardPerEpisode',
                     'Unit': 'None',
                     'Value': reward
                 },
@@ -317,9 +317,9 @@ class DeepRacerEnv(gym.Env):
             index = index + 1
         return res
 
-class DeepRacerDiscreteEnv(DeepRacerEnv):
+class DeepRotorDiscreteEnv(DeepRotorEnv):
     def __init__(self):
-        DeepRacerEnv.__init__(self)
+        DeepRotorEnv.__init__(self)
 
         # actions -> straight, left, right
         self.action_space = spaces.Discrete(5)
@@ -350,9 +350,9 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
         return super().step(continous_action)
 
 
-class DeepRacerMultiDiscreteEnv(DeepRacerEnv):
+class DeepRotorMultiDiscreteEnv(DeepRotorEnv):
     def __init__(self):
-        DeepRacerEnv.__init__(self)
+        DeepRotorEnv.__init__(self)
 
         # actions -> straight, left, right
         self.action_space = spaces.Discrete(10)

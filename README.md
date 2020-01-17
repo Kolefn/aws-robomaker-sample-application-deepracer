@@ -88,7 +88,7 @@ roslaunch deepracer_simulation local_training.launch
 
 As the reinforcement learning model improves, the reward function will increase. You can see the graph of this reward function at
 
-All -> AWSRoboMakerSimulation -> Metrics with no dimensions -> Metric Name -> DeepRacerRewardPerEpisode
+All -> AWSRoboMakerSimulation -> Metrics with no dimensions -> Metric Name -> DeepRotorRewardPerEpisode
 
 You can think of this metric as an indicator into how well your model has been trained. If the graph has plateaus, then your robot has finished learning.
 
