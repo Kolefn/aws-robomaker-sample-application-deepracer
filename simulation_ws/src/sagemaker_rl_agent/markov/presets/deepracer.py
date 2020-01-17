@@ -57,7 +57,7 @@ DeepRacerInputFilter.add_observation_filter('observation', 'stacking', Observati
 
 env_params = GymVectorEnvironment()
 env_params.default_input_filter = DeepRacerInputFilter
-env_params.level = 'RoboMaker-DeepRacer-v0'
+env_params.level = 'RoboMaker-DeepRotor-v0'
 
 vis_params = VisualizationParameters()
 vis_params.dump_mp4 = False
