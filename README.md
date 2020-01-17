@@ -1,4 +1,4 @@
-# Deep Racer
+# Deep Rotor
 
 This Sample Application runs a simulation which trains a reinforcement learning (RL) model to drive a car around a track.
 
@@ -6,7 +6,7 @@ _AWS RoboMaker sample applications include third-party software licensed under o
 
 Keywords: Reinforcement learning, AWS, RoboMaker
 
-![deeprotor-hard-track-world.jpg](docs/images/deeprotor-hard-track-world.jpg)
+![deepracer-hard-track-world.jpg](docs/images/deepracer-hard-track-world.jpg)
 
 ## Requirements
 
@@ -92,7 +92,7 @@ All -> AWSRoboMakerSimulation -> Metrics with no dimensions -> Metric Name -> De
 
 You can think of this metric as an indicator into how well your model has been trained. If the graph has plateaus, then your robot has finished learning.
 
-![deeprotor-metrics.png](docs/images/deeprotor-metrics.png)
+![deepracer-metrics.png](docs/images/deepracer-metrics.png)
 
 ### Evaluating the model
 
