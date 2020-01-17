@@ -6,7 +6,7 @@ _AWS RoboMaker sample applications include third-party software licensed under o
 
 Keywords: Reinforcement learning, AWS, RoboMaker
 
-![deepracer-hard-track-world.jpg](docs/images/deepracer-hard-track-world.jpg)
+![deeprotor-hard-track-world.jpg](docs/images/deeprotor-hard-track-world.jpg)
 
 ## Requirements
 
@@ -68,7 +68,7 @@ colcon bundle
 
 The following environment variables must be set when you run your simulation:
 
-- `MARKOV_PRESET_FILE` - Defines the hyperparameters of the reinforcement learning algorithm. This should be set to `deepracer.py`.
+- `MARKOV_PRESET_FILE` - Defines the hyperparameters of the reinforcement learning algorithm. This should be set to `deeprotor.py`.
 - `MODEL_S3_BUCKET` - The name of the S3 bucket in which you want to store the trained model.
 - `MODEL_S3_PREFIX` - The path where you want to store the model.
 - `WORLD_NAME` - The track to train the model on. Can be one of easy_track, medium_track, or hard_track.
@@ -92,7 +92,7 @@ All -> AWSRoboMakerSimulation -> Metrics with no dimensions -> Metric Name -> De
 
 You can think of this metric as an indicator into how well your model has been trained. If the graph has plateaus, then your robot has finished learning.
 
-![deepracer-metrics.png](docs/images/deepracer-metrics.png)
+![deeprotor-metrics.png](docs/images/deeprotor-metrics.png)
 
 ### Evaluating the model
 

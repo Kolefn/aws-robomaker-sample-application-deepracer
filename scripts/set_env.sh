@@ -2,8 +2,8 @@ ACCESS_KEY_ID=$1
 SECRET_ACCESS_KEY=$2
 SESSION_TOKEN=$3
 
-echo "export MARKOV_PRESET_FILE=\"deepracer.py\"" >> ~/.bashrc
-echo "export MODEL_S3_BUCKET=\"deepracer-model-bucket\"" >> ~/.bashrc
+echo "export MARKOV_PRESET_FILE=\"deeprotor.py\"" >> ~/.bashrc
+echo "export MODEL_S3_BUCKET=\"deeprotor-model-bucket\"" >> ~/.bashrc
 echo "export MODEL_S3_PREFIX=\"model-store\"" >> ~/.bashrc
 echo "export WORLD_NAME=\"easy_track\"" >> ~/.bashrc
 echo "export ROS_AWS_REGION=\"us-east-1\"" >> ~/.bashrc

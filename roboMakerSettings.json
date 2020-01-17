@@ -29,7 +29,7 @@
             "packageName": "deepracer_simulation",
             "launchFile": "local_training.launch",
             "environmentVariables": {
-              "MARKOV_PRESET_FILE": "deepracer.py",
+              "MARKOV_PRESET_FILE": "deeprotor.py",
               "MODEL_S3_BUCKET": "<bucket name your your trained model>",
               "MODEL_S3_PREFIX": "model-store",
               "WORLD_NAME": "hard_track",
@@ -75,7 +75,7 @@
             "packageName": "deepracer_simulation",
             "launchFile": "evaluation.launch",
             "environmentVariables": {
-              "MARKOV_PRESET_FILE": "deepracer.py",
+              "MARKOV_PRESET_FILE": "deeprotor.py",
               "MODEL_S3_BUCKET": "<bucket name your your trained model>",
               "MODEL_S3_PREFIX": "model-store",
               "WORLD_NAME": "hard_track",
