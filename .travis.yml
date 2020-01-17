@@ -15,7 +15,7 @@ env:
   - ROS_DISTRO=melodic ROS_VERSION=1 GAZEBO_VERSION=9
   global:
   - SA_NAME=deep-racer
-  - SA_PACKAGE_NAME=deepracer_simulation
+  - SA_PACKAGE_NAME=deeprotor_simulation
   - NO_TEST=true
   - GH_USER_NAME="travis-ci"
   - GH_USER_EMAIL="travis@travis-ci.org"

@@ -8,7 +8,7 @@
 #include <ignition/math/Vector3.hh>
 
 #include "ros/ros.h"
-#include "deepracer_msgs/Progress.h"
+#include "deeprotor_msgs/Progress.h"
 
 #include "racecar_plugin.hh"
 
@@ -24,7 +24,7 @@ void gazebo::RacecarPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr /*_s
   char** argv;
   ros::init(argc, argv, "progress_tracker");
   ros::NodeHandle n;
-  chatter_pub = n.advertise<deepracer_msgs::Progress>("progress", 1000);
+  chatter_pub = n.advertise<deeprotor_msgs::Progress>("progress", 1000);
 
 #if GAZEBO_MAJOR_VERSION >= 9
   worldName = _parent->GetWorld()->Name();
@@ -49,7 +49,7 @@ void gazebo::RacecarPlugin::sendProgress(const int off_track, const double yaw, 
                                          const double z, const double progrezz, const double distanceFromCenter,
                                          const double distanceFromBorder1, const double distanceFromBorder2)
 {
-  deepracer_msgs::Progress progress;
+  deeprotor_msgs::Progress progress;
   progress.off_track = off_track;
   progress.yaw = yaw;
   progress.x = x;

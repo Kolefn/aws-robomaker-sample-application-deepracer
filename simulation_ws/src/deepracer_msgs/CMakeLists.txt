@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(deepracer_msgs)
+project(deeprotor_msgs)
 
 find_package(catkin REQUIRED COMPONENTS 
 	std_msgs

@@ -26,7 +26,7 @@
           "sourceBundleFile": "./DeepRotor/simulation_ws/bundle/output.tar",
           "architecture": "X86_64",
           "launchConfig": {
-            "packageName": "deepracer_simulation",
+            "packageName": "deeprotor_simulation",
             "launchFile": "local_training.launch",
             "environmentVariables": {
               "MARKOV_PRESET_FILE": "deeprotor.py",
@@ -72,7 +72,7 @@
           "sourceBundleFile": "./DeepRotor/simulation_ws/bundle/output.tar",
           "architecture": "X86_64",
           "launchConfig": {
-            "packageName": "deepracer_simulation",
+            "packageName": "deeprotor_simulation",
             "launchFile": "evaluation.launch",
             "environmentVariables": {
               "MARKOV_PRESET_FILE": "deeprotor.py",

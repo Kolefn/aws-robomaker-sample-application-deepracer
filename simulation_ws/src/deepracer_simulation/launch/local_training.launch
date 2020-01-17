@@ -8,10 +8,10 @@
     <param name="ROS_AWS_REGION" value="$(env ROS_AWS_REGION)" />
     <param name="JOB_TYPE" value="TRAINING" />
 
-    <include file="$(find deepracer_simulation)/launch/racetrack_with_racecar.launch">
+    <include file="$(find deeprotor_simulation)/launch/racetrack_with_racecar.launch">
         <arg name="world_name" value="$(env WORLD_NAME)" />
         <arg name="gui" value="$(arg gui)"/>
     </include>
 
-    <node name="agent" pkg="deepracer_simulation" type="run_local_rl_agent.sh" output="screen" required="true"/>
+    <node name="agent" pkg="deeprotor_simulation" type="run_local_rl_agent.sh" output="screen" required="true"/>
 </launch>

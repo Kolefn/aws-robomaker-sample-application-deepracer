@@ -81,7 +81,7 @@ Once the environment variables are set, you can run local training using the ros
 
 ```bash
 source simulation_ws/install/setup.sh
-roslaunch deepracer_simulation local_training.launch
+roslaunch deeprotor_simulation local_training.launch
 ```
 
 #### Seeing your robot learn
@@ -107,7 +107,7 @@ evaluation using the roslaunch command
 
 ```bash
 source simulation_ws/install/setup.sh
-roslaunch deepracer_simulation evaluation.launch
+roslaunch deeprotor_simulation evaluation.launch
 ```
 
 ### Troubleshooting

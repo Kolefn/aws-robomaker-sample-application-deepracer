@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>deepracer_simulation</name>
+  <name>deeprotor_simulation</name>
   <version>1.2.0</version>
   <description>
     Teaches a racecar to drive in a simulation through reinforcement learning.

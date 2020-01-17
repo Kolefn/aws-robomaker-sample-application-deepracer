@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(deepracer_interpreter)
+project(deeprotor_interpreter)
 
 find_package(catkin REQUIRED COMPONENTS
   gazebo_ros
-  deepracer_msgs
+  deeprotor_msgs
 )
 
 catkin_package()

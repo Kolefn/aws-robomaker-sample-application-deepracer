@@ -34,7 +34,7 @@
   </light>
 
   <include>
-    <uri>model://deepracer_simulation/models/medium_track</uri>
+    <uri>model://deeprotor_simulation/models/medium_track</uri>
     <pose>0 0 0 0 0 0</pose>
     <name>racetrack</name>
   </include>

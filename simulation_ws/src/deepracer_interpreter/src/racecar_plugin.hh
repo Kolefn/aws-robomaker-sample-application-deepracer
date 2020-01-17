@@ -12,7 +12,7 @@
 #include <ignition/math/Vector3.hh>
 
 #include "ros/ros.h"
-#include "deepracer_msgs/Progress.h"
+#include "deeprotor_msgs/Progress.h"
 
 #if GAZEBO_MAJOR_VERSION >= 9
 #include <ignition/math/Pose3.hh>

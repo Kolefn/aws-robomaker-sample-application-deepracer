@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot name="racecar" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:include filename="$(find deepracer_simulation)/urdf/macros.xacro" />
+  <xacro:include filename="$(find deeprotor_simulation)/urdf/macros.xacro" />
 
   <!-- Add chassis and it's inertia link -->
 
@@ -239,7 +239,7 @@
 
   <!-- Add the remaining xacros -->
 
-  <xacro:include filename="$(find deepracer_simulation)/urdf/racecar.gazebo" />
-  <xacro:include filename="$(find deepracer_simulation)/urdf/materials.xacro" />
+  <xacro:include filename="$(find deeprotor_simulation)/urdf/racecar.gazebo" />
+  <xacro:include filename="$(find deeprotor_simulation)/urdf/materials.xacro" />
 
 </robot>

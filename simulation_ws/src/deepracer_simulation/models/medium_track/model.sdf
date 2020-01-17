@@ -29,8 +29,8 @@
         </geometry>
         <material>
 		  <script>
-		    <uri>model://deepracer_simulation/meshes/medium_track/scripts</uri>
-            <uri>model://deepracer_simulation/meshes/medium_track/textures</uri>
+		    <uri>model://deeprotor_simulation/meshes/medium_track/scripts</uri>
+            <uri>model://deeprotor_simulation/meshes/medium_track/textures</uri>
             <name>medium_track/Image</name>
 		  </script>
         </material>

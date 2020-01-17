@@ -25,7 +25,7 @@ if node_type == SIMULATION_WORKER:
     from gazebo_msgs.srv import SetModelState
 
     from sensor_msgs.msg import Image as sensor_image
-    from deepracer_msgs.msg import Progress
+    from deeprotor_msgs.msg import Progress
 
 TRAINING_IMAGE_SIZE = (160, 120)
 FINISH_LINE = 100

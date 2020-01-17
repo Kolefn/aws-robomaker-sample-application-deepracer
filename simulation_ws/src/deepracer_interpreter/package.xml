@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>deepracer_interpreter</name>
+  <name>deeprotor_interpreter</name>
   <version>1.0.0</version>
   <description>The DeepRotorInterpreter package</description>
   <maintainer email="gouravr@amazon.com">gouravr</maintainer>
@@ -9,7 +9,7 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <build_depend>gazebo_ros</build_depend>
-  <build_depend>deepracer_msgs</build_depend>
+  <build_depend>deeprotor_msgs</build_depend>
   <build_depend>gazebo</build_depend>
 
   <run_depend>gazebo_ros</run_depend>
@@ -18,7 +18,7 @@
   <run_depend>ros_controllers</run_depend>
   <run_depend>ros_control</run_depend>
   <run_depend>gazebo_ros_control</run_depend>
-  <run_depend>deepracer_msgs</run_depend>
+  <run_depend>deeprotor_msgs</run_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
