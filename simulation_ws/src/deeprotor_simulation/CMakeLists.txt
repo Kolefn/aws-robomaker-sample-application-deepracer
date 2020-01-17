@@ -20,7 +20,6 @@ include_directories(
 #############
 
 install(PROGRAMS
-    scripts/servo_commands.py
     scripts/run_local_rl_agent.sh
     scripts/run_rollout_rl_agent.sh
     scripts/run_evaluation_rl_agent.sh
@@ -29,12 +28,6 @@ install(PROGRAMS
 
 install(DIRECTORY launch/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
-)
-install(DIRECTORY config/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
-)
-install(DIRECTORY meshes/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/meshes
 )
 install(DIRECTORY models/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/models
