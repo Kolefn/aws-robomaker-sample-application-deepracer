@@ -22,6 +22,10 @@
   <run_depend>robot_state_publisher</run_depend>
   <run_depend>ros_control</run_depend>
   <run_depend>ros_controllers</run_depend>
+  <run_depend>rotors_simulator</run_depend>
+  <run_depend>rotors_gazebo</run_depend>
+  <run_depend>rotors_gazebo_plugins</run_depend>
+  <run_depend>mav_msgs</run_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
