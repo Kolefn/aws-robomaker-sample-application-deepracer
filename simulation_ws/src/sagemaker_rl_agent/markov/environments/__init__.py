@@ -8,10 +8,3 @@ register(
     max_episode_steps=MAX_STEPS,
     reward_threshold=200
 )
-
-register(
-    id='RoboMaker-ObjectTracker-v0',
-    entry_point='markov.environments.object_tracker_env:TurtleBot3ObjectTrackerAndFollowerDiscreteEnv',
-    max_episode_steps = MAX_STEPS,
-    reward_threshold = 200
-)
