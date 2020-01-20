@@ -275,7 +275,7 @@ class DeepRotorDiscreteEnv(DeepRotorEnv):
         self.velocity_sets = [[value, value, value, value] for value in velocity_values] 
 
         # actions -> index withiin discrete list of rotor velocity sets
-        self.action_space = spaces.Discrete(len(velociity_sets))
+        self.action_space = spaces.Discrete(len(self.velocity_sets))
 
     def step(self, action):
 
