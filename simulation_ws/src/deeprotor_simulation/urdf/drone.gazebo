@@ -24,7 +24,7 @@
         <image>
           <width>640</width>
           <height>480</height>
-          <format>R8G8B8</format>
+          <format>B8G8R8</format>
         </image>
         <clip>
           <near>0.02</near>
@@ -33,7 +33,7 @@
       </camera>
       <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
         <alwaysOn>true</alwaysOn>
-        <updateRate>60</updateRate>
+        <updateRate>15.0</updateRate>
         <cameraName>/camera/zed</cameraName>
         <imageTopicName>rgb/image_rect_color</imageTopicName>
         <cameraInfoTopicName>rgb/camera_info</cameraInfoTopicName>
