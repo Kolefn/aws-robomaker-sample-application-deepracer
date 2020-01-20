@@ -10,7 +10,7 @@
       <uri>model://sun</uri>
     </include>
     <include>
-      <uri>model://models/red_square</uri>
+      <uri>model://deeprotor_simulation/models/red_square</uri>
       <pose>-1.5 1.5 0.5 -80 0 1 </pose>
       <name>target</name>
     </include>
