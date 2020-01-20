@@ -84,7 +84,7 @@ class DeepRotorEnv(gym.Env):
     def reset(self):
         if node_type == SAGEMAKER_TRAINING_WORKER:
             return self.observation_space.sample()
-        print('Total Reward Reward=%.2f' % self.reward_in_episode,
+        print('Total Reward=%.2f' % self.reward_in_episode,
               'Total Steps=%.2f' % self.steps)
         self.send_reward_to_cloudwatch(self.reward_in_episode)
 
