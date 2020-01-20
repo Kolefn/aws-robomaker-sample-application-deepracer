@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 
 # Pre build setup
 echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc

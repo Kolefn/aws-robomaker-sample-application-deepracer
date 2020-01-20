@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 
 # download and setup rotors_simulator dependencies
 wstool init simulation_ws/src/
