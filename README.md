@@ -25,8 +25,9 @@ You will need to create an AWS Account and configure the credentials to be able 
 1. Download and install the Amazon Command Line Interface http://docs.aws.amazon.com/cli/latest/userguide/installing.html
 2. Configure the command line interface http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
     - `aws configure`
-2. Request the session token
+2. Request the session token and temp access key/secret
     - `aws sts get-session-token --duration-seconds 129600`
+3. Set the `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` env vars with the output
 
 
 ### AWS Permissions
