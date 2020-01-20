@@ -50,7 +50,7 @@
   </joint>
 
   <!-- Add the remaining xacros -->
-  <xacro:include filename="$(find deeprotor_simulation_environment)/urdf/drone.gazebo" />
-  <xacro:include filename="$(find deeprotor_simulation_environment)/urdf/materials.xacro" />
+  <xacro:include filename="$(find deeprotor_simulation)/urdf/drone.gazebo" />
+  <xacro:include filename="$(find deeprotor_simulation)/urdf/materials.xacro" />
 
 </robot>
