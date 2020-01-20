@@ -76,7 +76,7 @@ class DeepRotorEnv(gym.Env):
             rospy.init_node('rl_coach', anonymous=True)
 
             # Subscribe to ROS topics and register callbacks
-            rospy.Subscriber('/camera/zed/rgb/image_rect_color', sensor_image, self.callback_image)
+            rospy.Subscriber('/drone/camera/zed/rgb/image_rect_color', sensor_image, self.callback_image)
 
             self.world_name = rospy.get_param('WORLD_NAME')
             self.aws_region = rospy.get_param('ROS_AWS_REGION')
