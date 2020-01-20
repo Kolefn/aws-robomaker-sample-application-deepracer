@@ -143,7 +143,7 @@ class DeepRotorEnv(gym.Env):
     def send_action(self, action):
         msg = Actuators()
         msg.angular_velocities = action
-        self.velocity_pubisher.publish(msg)
+        self.velocity_publisher.publish(msg)
 
     def reward_function(self, params):
         target_x = params['target_x']
