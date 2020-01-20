@@ -175,9 +175,9 @@ class DeepRotorEnv(gym.Env):
         norm_dist_z = (abs(ideal_z - z) / max_dist_z)
 
         axis_weight = 0.333
-        factor_x = exp_decay(norm_dist_x) * axis_weight
-        factor_y = exp_decay(norm_dist_y) * axis_weight
-        factor_z = exp_decay(norm_dist_z) * axis_weight
+        factor_x = self.exp_decay(norm_dist_x) * axis_weight
+        factor_y = self.exp_decay(norm_dist_y) * axis_weight
+        factor_z = self.exp_decay(norm_dist_z) * axis_weight
 
         reward = factor_x + factor_y + factor_z
 
