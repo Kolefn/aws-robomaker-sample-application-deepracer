@@ -145,7 +145,7 @@ class DeepRotorEnv(gym.Env):
         msg.angular_velocities = action
         self.velocity_publisher.publish(msg)
 
-    def exp_decay(x):
+    def exp_decay(self, x):
         return 0.1 ** (2*x)
 
     def reward_function(self, params):
