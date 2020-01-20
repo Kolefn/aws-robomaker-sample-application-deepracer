@@ -20,6 +20,14 @@ Keywords: Reinforcement learning, AWS, RoboMaker
 ### AWS Credentials
 You will need to create an AWS Account and configure the credentials to be able to communicate with AWS services. You may find [AWS Configuration and Credential Files](https://docs.aws.amazon.com/cli/latest/userguide/cli-config-files.html) helpful.
 
+### Creating a Session Token
+
+1. Download and install the Amazon Command Line Interface http://docs.aws.amazon.com/cli/latest/userguide/installing.html
+2. Configure the command line interface http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
+    - `aws configure`
+2. Request the session token
+    - `aws sts get-session-token --duration-seconds 129600`
+
 
 ### AWS Permissions
 
