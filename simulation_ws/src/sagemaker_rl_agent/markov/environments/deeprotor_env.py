@@ -67,10 +67,8 @@ class DeepRotorEnv(gym.Env):
 
         if node_type == SIMULATION_WORKER:
             # ROS initialization
-            print("waiting for services")
             rospy.wait_for_service('/gazebo/get_model_state')
             rospy.wait_for_service('/gazebo/set_model_state')
-            print("services loaded")
             self.get_model_service = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
             self.set_model_service = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
             self.velocity_publisher = rospy.Publisher("/drone/command/motor_speed", Actuators, queue_size=1)
@@ -185,7 +183,6 @@ class DeepRotorEnv(gym.Env):
     def infer_reward_state(self, action):
         # Wait till we have a image from the camera
         while not self.image:
-            print("waiting")
             time.sleep(SLEEP_WAITING_FOR_IMAGE_TIME_IN_SECOND)
 
         # Camera spits out BGR images by default. Converting to the
