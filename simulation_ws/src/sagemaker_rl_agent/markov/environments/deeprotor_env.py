@@ -235,6 +235,7 @@ class DeepRotorEnv(gym.Env):
                 'x_bound': WORLD_BOUND_X,
                 'y_bound': WORLD_BOUND_Y,
                 'z_bound': WORLD_BOUND_Z,
+                'action': action,
                 'steps': self.steps,
             }
             reward = self.reward_function(params)
@@ -279,6 +280,13 @@ class DeepRotorDiscreteEnv(DeepRotorEnv):
 
         # actions -> index withiin discrete list of rotor velocity sets
         self.action_space = spaces.Discrete(len(self.velocity_sets))
+    
+    def reward_function(self, params):
+        action = params['action']
+        if action == self.velocity_sets[0]:
+            return 0.5
+        elif action == self.velocity_sets[1]:
+            return 1
 
     def step(self, action):
 
