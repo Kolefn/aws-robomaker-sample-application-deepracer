@@ -4,16 +4,13 @@ A simulation which trains a reinforcement learning (RL) model to fly a drone.
 
 _AWS RoboMaker sample applications include third-party software licensed under open-source licenses and is provided for demonstration purposes only. Incorporation or use of RoboMaker sample applications in connection with your production workloads or a commercial products or devices may affect your legal rights or obligations under the applicable open-source licenses. Source code information can be found [here](https://s3.console.aws.amazon.com/s3/buckets/robomaker-applications-us-east-1-72fc243f9355/deep-racer/?region=us-east-1)._
 
-Keywords: Reinforcement learning, AWS, RoboMaker
-
-![deepracer-hard-track-world.jpg](docs/images/deepracer-hard-track-world.jpg)
+Keywords: Reinforcement learning, AWS, RoboMaker, Drone
 
 ## Requirements
 
 - ROS Kinetic / Melodic (optional) - To run the simulation locally. Other distributions of ROS may work, however they have not been tested
 - Gazebo (optional) - To run the simulation locally
 - An AWS S3 bucket - To store the trained reinforcement learning model
-- AWS RoboMaker - To run the simulation and to deploy the trained model to the robot
 
 ## AWS Account Setup
 
@@ -58,19 +55,16 @@ To train the reinforcement learning model in simulation, you need an IAM role wi
 }
 ```
 
-## Usage
+### Getting Started
+1. Setup your development VM by following [these instructions](https://github.com/Kolefn/cantina-deeprotor/wiki/VM-Setup).
 
-### Training the model
+Run these commands in your VM terminal
 
-#### Building the simulation bundle
-
-```bash
-cd simulation_ws
-rosws update
-rosdep install --from-paths src --ignore-src -r -y
-colcon build
-colcon bundle
-```
+2. `git clone https://github.com/kolefn/cantina-deeprotor.git`
+3. `cd cantina-deeprotor`
+4. `bash ./scripts/setup_ros.sh` - **10 Minutes (Y/n prompts)**
+5. `bash ./scripts/setup_dependencies.sh` - **3 Minutes (Y/n prompts)**
+6. `bash ./scripts/first_build.sh` - **~10 Minutes**
 
 #### Running the simulation
 
@@ -101,7 +95,7 @@ All -> AWSRoboMakerSimulation -> Metrics with no dimensions -> Metric Name -> De
 
 You can think of this metric as an indicator into how well your model has been trained. If the graph has plateaus, then your robot has finished learning.
 
-![deepracer-metrics.png](docs/images/deepracer-metrics.png)
+![deeprotor-metrics.png](docs/images/deeprotor-metrics.png)
 
 ### Evaluating the model
 
@@ -123,9 +117,9 @@ roslaunch deeprotor_simulation evaluation.launch
 
 ###### The robot does not look like it is training
 
-The training algorithm has two phases. The first is when the reinforcement learning model is used to make the car move in the track, 
+The training algorithm has two phases. The first is when the reinforcement learning model is used to make the drone move in the world, 
 while the second is when the algorithm uses the information gathered in the first phase to improve the model. In the second
-phase, no new commands are sent to the car, meaning it will appear as if it is stopped, spinning in circles, or drifting off
+phase, no new commands are sent to the drone, meaning it will appear as if it is stopped, spinning in circles, or drifting off
 aimlessly.
 
 ## Using this sample with AWS RoboMaker
