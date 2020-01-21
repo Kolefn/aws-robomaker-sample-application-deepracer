@@ -33,7 +33,7 @@ SLEEP_AFTER_RESET_TIME_IN_SECOND = 0.5
 SLEEP_BETWEEN_ACTION_AND_REWARD_CALCULATION_TIME_IN_SECOND = 0.1
 SLEEP_WAITING_FOR_IMAGE_TIME_IN_SECOND = 0.01
 
-CRASHED = -1000
+CRASHED = -10000
 WORLD_BOUND_X = 15
 WORLD_BOUND_Y = 15
 WORLD_BOUND_Z = 15
@@ -214,7 +214,7 @@ class DeepRotorEnv(gym.Env):
 
         reward = 0
         if model_crashed:
-            reward = CRASHED
+            reward = CRASHED / self.steps
             done = True
         else:
             done = False
