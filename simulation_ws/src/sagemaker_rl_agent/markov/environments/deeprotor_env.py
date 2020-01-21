@@ -286,7 +286,7 @@ class DeepRotorDiscreteEnv(DeepRotorEnv):
         if action == self.velocity_sets[0]:
             return 0.5
         elif action == self.velocity_sets[1]:
-            return 1
+            return 1.0
 
     def step(self, action):
 
