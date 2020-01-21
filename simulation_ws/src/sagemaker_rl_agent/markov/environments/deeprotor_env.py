@@ -280,16 +280,6 @@ class DeepRotorDiscreteEnv(DeepRotorEnv):
 
         # actions -> index withiin discrete list of rotor velocity sets
         self.action_space = spaces.Discrete(len(self.velocity_sets))
-    
-    def reward_function(self, params):
-        action = params['action']
-        reward = 0
-        if action == self.velocity_sets[0]:
-            reward = 0.5
-        elif action == self.velocity_sets[1]:
-            reward = 1.0
-        
-        return float(reward)
 
     def step(self, action):
 
