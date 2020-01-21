@@ -283,10 +283,13 @@ class DeepRotorDiscreteEnv(DeepRotorEnv):
     
     def reward_function(self, params):
         action = params['action']
+        reward = 0
         if action == self.velocity_sets[0]:
-            return 0.5
+            reward = 0.5
         elif action == self.velocity_sets[1]:
-            return 1.0
+            reward = 1.0
+        
+        return float(reward)
 
     def step(self, action):
 
