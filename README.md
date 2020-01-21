@@ -12,12 +12,23 @@ Keywords: Reinforcement learning, AWS, RoboMaker, Drone
 - Gazebo (optional) - To run the simulation locally
 - An AWS S3 bucket - To store the trained reinforcement learning model
 
-## AWS Account Setup
+## Get Started
+1. Setup your development VM by following [these instructions](https://github.com/Kolefn/cantina-deeprotor/wiki/VM-Setup).
 
-### AWS Credentials
+Run these commands in your VM terminal
+
+2. `git clone https://github.com/kolefn/cantina-deeprotor.git`
+3. `cd cantina-deeprotor`
+4. `bash ./scripts/setup_ros.sh` - **10 Minutes (Y/n prompts)**
+5. `bash ./scripts/setup_dependencies.sh` - **3 Minutes (Y/n prompts)**
+6. `bash ./scripts/first_build.sh` - **~10 Minutes**
+
+### AWS Account Setup
+
+#### AWS Credentials
 You will need to create an AWS Account and configure the credentials to be able to communicate with AWS services. You may find [AWS Configuration and Credential Files](https://docs.aws.amazon.com/cli/latest/userguide/cli-config-files.html) helpful.
 
-### Creating a Session Token
+#### Creating a Session Token
 
 1. Download and install the Amazon Command Line Interface http://docs.aws.amazon.com/cli/latest/userguide/installing.html
 2. Configure the command line interface http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
@@ -27,7 +38,7 @@ You will need to create an AWS Account and configure the credentials to be able 
 3. Set the `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` env vars with the output
 
 
-### AWS Permissions
+#### AWS Permissions
 
 To train the reinforcement learning model in simulation, you need an IAM role with the following policy. You can find instructions for creating a new IAM Policy
 [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_create.html#access_policies_create-start). In the JSON tab paste the following policy document:
@@ -55,26 +66,14 @@ To train the reinforcement learning model in simulation, you need an IAM role wi
 }
 ```
 
-### Getting Started
-1. Setup your development VM by following [these instructions](https://github.com/Kolefn/cantina-deeprotor/wiki/VM-Setup).
-
-Run these commands in your VM terminal
-
-2. `git clone https://github.com/kolefn/cantina-deeprotor.git`
-3. `cd cantina-deeprotor`
-4. `bash ./scripts/setup_ros.sh` - **10 Minutes (Y/n prompts)**
-5. `bash ./scripts/setup_dependencies.sh` - **3 Minutes (Y/n prompts)**
-6. `bash ./scripts/first_build.sh` - **~10 Minutes**
-
 #### Running the simulation
-
 
 The following environment variables must be set when you run your simulation:
 
 - `MARKOV_PRESET_FILE` - Defines the hyperparameters of the reinforcement learning algorithm. This should be set to `deeprotor.py`.
 - `MODEL_S3_BUCKET` - The name of the S3 bucket in which you want to store the trained model.
 - `MODEL_S3_PREFIX` - The path where you want to store the model.
-- `WORLD_NAME` - The track to train the model on. Can be one of easy_track, medium_track, or hard_track.
+- `WORLD_NAME` - The world to train the model in. See the [world directory](https://github.com/Kolefn/cantina-deeprotor/tree/deeprotor/simulation_ws/src/deeprotor_simulation/worlds).
 - `ROS_AWS_REGION` - The region of the S3 bucket in which you want to store the model.
 - `AWS_ACCESS_KEY_ID` - The access key for the role you created in the "AWS Permissions" section
 - `AWS_SECRET_ACCESS_KEY` - The secret access key for the role you created in the "AWS Permissions" section
