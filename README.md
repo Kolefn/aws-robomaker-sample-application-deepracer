@@ -13,15 +13,20 @@ Keywords: Reinforcement learning, AWS, RoboMaker, Drone
 - An AWS S3 bucket - To store the trained reinforcement learning model
 
 ## Get Started
-1. Setup your development VM by following [these instructions](https://github.com/Kolefn/cantina-deeprotor/wiki/VM-Setup).
+1. Install Vagrant and Virtualbox
 
-Run these commands in your VM terminal
+Run these commands from your host machine
 
 2. `git clone https://github.com/kolefn/cantina-deeprotor.git`
 3. `cd cantina-deeprotor`
-4. `bash ./scripts/setup_ros.sh` - **10 Minutes (Y/n prompts)**
-5. `bash ./scripts/setup_dependencies.sh` - **3 Minutes (Y/n prompts)**
-6. `bash ./scripts/first_build.sh` - **~10 Minutes**
+4. `./scripts/deeprotor setup` - **10 Minutes**
+
+This will add a `deeprotor` command to your host and guest profiles, bring up the guest VM, and install dependencies needed to build and run the simulation.
+
+To build the simulation, run these commands
+
+5. `deeprotor ssh` (use `deeprotor up` if the VM is not already on)
+6. (In the ssh session) `deeprotor build-local`
 
 ### AWS Account Setup
 
@@ -31,12 +36,10 @@ You will need to create an AWS Account and configure the credentials to be able 
 #### Creating a Session Token
 
 1. Download and install the Amazon Command Line Interface http://docs.aws.amazon.com/cli/latest/userguide/installing.html
-2. Configure the command line interface http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
+2. Configure the command line interface, and specify "text" as the output format http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
     - `aws configure`
-2. Request the session token and temp access key/secret
-    - `aws sts get-session-token --duration-seconds 129600`
-3. Set the `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` env vars with the output
-
+2. Refresh the session token and temp access key/secret, stored in `.creds`
+    - `deeprotor refresh-creds`
 
 #### AWS Permissions
 
@@ -66,31 +69,21 @@ To train the reinforcement learning model in simulation, you need an IAM role wi
 }
 ```
 
-#### Running the simulation
+### Running the simulation
 
-The following environment variables must be set when you run your simulation:
+The simulation is configured using environment variables in `.env` and `.creds`, which should be created by `deeprotor setup` and `deeprotor refresh-creds`.
 
-- `MARKOV_PRESET_FILE` - Defines the hyperparameters of the reinforcement learning algorithm. This should be set to `deeprotor.py`.
-- `MODEL_S3_BUCKET` - The name of the S3 bucket in which you want to store the trained model.
-- `MODEL_S3_PREFIX` - The path where you want to store the model.
-- `WORLD_NAME` - The world to train the model in. See the [world directory](https://github.com/Kolefn/cantina-deeprotor/tree/deeprotor/simulation_ws/src/deeprotor_simulation/worlds).
-- `ROS_AWS_REGION` - The region of the S3 bucket in which you want to store the model.
-- `AWS_ACCESS_KEY_ID` - The access key for the role you created in the "AWS Permissions" section
-- `AWS_SECRET_ACCESS_KEY` - The secret access key for the role you created in the "AWS Permissions" section
-- `AWS_SESSION_TOKEN` - The session token for the role you created in the "AWS Permissions" section
-
-Once the environment variables are set, you can run local training using the roslaunch command
+Once the environment variables are set and adjusted for your use, you can run local training using the deeprotor command from a GUI terminal
 
 ```bash
-source simulation_ws/install/setup.sh
-roslaunch deeprotor_simulation local_training.launch
+deeprotor train-local [--verbose]
 ```
 
 #### Seeing your robot learn
 
-As the reinforcement learning model improves, the reward function will increase. You can see the graph of this reward function at
+As the reinforcement learning model improves, the reward function will increase. You can see the graph of this reward function using [AWS Cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
 
-All -> AWSRoboMakerSimulation -> Metrics with no dimensions -> Metric Name -> DeepRotorRewardPerEpisode
+Metrics in the left panel -> All -> AWSRoboMakerSimulation -> Metrics with no dimensions -> Metric Name -> DeepRotorRewardPerEpisode
 
 You can think of this metric as an indicator into how well your model has been trained. If the graph has plateaus, then your robot has finished learning.
 
@@ -105,14 +98,15 @@ You can reuse the bundle from the training phase again in the simulation phase.
 #### Running the simulation
 
 The evaluation phase requires that the same environment variables be set as in the training phase. Once the environment variables are set, you can run
-evaluation using the roslaunch command
+evaluation using the roslaunch command from a terminal in the GUI
 
 ```bash
-source simulation_ws/install/setup.sh
-roslaunch deeprotor_simulation evaluation.launch
+deeprotor evaluate [--verbose]
 ```
 
 ### Troubleshooting
+
+colcon build logs are located in `simulation_ws/log`. Simulation and training logs are located in `~/.ros/log/latest`.
 
 ###### The robot does not look like it is training
 
