@@ -11,8 +11,7 @@ sudo apt-get install -y \
     geographiclib-tools \
     libignition-math2-dev \
     ros-kinetic-ros-control \
-    ros-kinetic-ros-controllers \
-    ntp
+    ros-kinetic-ros-controllers
 
 # fix bug in dependency code
 sed -i 's/msg.twist_covariance/msg.velocity_covariance/g' simulation_ws/src/mavros/mavros_extras/src/plugins/odom.cpp

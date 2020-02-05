@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+#
+# Command-line interface for controlling the deeprotor development environment.
+#
+# From your host machine, run `deeprotor setup` to add the deeprotor command to your
+# profile, create the VM, and install project dependencies.
+
+source $(realpath $(dirname $BASH_SOURCE))/deeprotor-paths.sh
+
+deeprotor() {
+  case "$1" in
+    cd)
+      cd $DEEPROTOR_ROOT
+      ;;
+    *)
+      if is_guest; then
+        $DEEPROTOR_GUEST $@
+      else
+        $DEEPROTOR_HOST $@
+      fi
+      ;;
+  esac
+}
+
+is_guest() {
+  # VM's have hypervisor added to cpuinfo 
+  [ -e /proc/cpuinfo ] && grep -q '^flags.* hypervisor ' /proc/cpuinfo
+}
+
+# Call the function if run as a shell command.
+[ "$BASH_SOURCE" == "$0" ] && deeprotor $@
