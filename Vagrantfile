@@ -22,10 +22,14 @@ Vagrant.configure("2") do |config|
     ]
   end
 
+  # Forward VNC port
+  config.vm.network "forwarded_port", guest: 5900, host: 5900
+
   config.vm.provision "deps", type: "shell", inline: <<-SHELL
     apt-get update
-    apt-get install -y lxqt xinit ntp
-    echo "Reboot to start using UI"
+    apt-get install -y lxqt xinit ntp xvfb x11vnc
+    # Boot to command line, not GUI
+    systemctl set-default multi-user.target
   SHELL
 
   config.vm.provision "env", type: "shell", privileged: false, inline: <<-SHELL
