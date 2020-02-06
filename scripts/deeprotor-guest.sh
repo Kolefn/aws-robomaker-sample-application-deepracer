@@ -8,7 +8,7 @@ ROS_BASE_SETUP=/opt/ros/kinetic/setup.bash
 # Configures roslaunch to use the built project, including the base setup.
 ROS_RUN_SETUP=$DEEPROTOR_ROOT/simulation_ws/install/setup.bash
 
-deeprotor() {
+deeprotor-guest() {
   case "$1" in
     setup)
       setup
@@ -36,14 +36,7 @@ deeprotor() {
 }
 
 launch-simulation() {
-  ENVFILE=${ENVFILE:-.env}
-  CREDFILE=${CREDFILE:-.creds}
-  
-  set -o allexport
-    [ -e "$ENVFILE" ] && source $ENVFILE
-    [ -e "$CREDFILE" ] && source $CREDFILE
-  set +o allexport
-  
+  export_env_and_creds
   source $ROS_RUN_SETUP
 
   if [ "$2" == "--verbose" ]; then
@@ -75,13 +68,13 @@ refresh_creds() {
 
 setup() {
   echo "Installing ROS"
-  bash scripts/setup_ros.sh || quit "Error installing ROS"
+  bash -x scripts/setup_ros.sh || quit "Error installing ROS"
 
   echo "Adding ROS setup to profile"
   source_from_profile $ROS_BASE_SETUP
 
   echo "Installing project dependencies"
-  bash scripts/setup_dependencies.sh || quit "Error installing dependencies"
+  bash -x scripts/setup_dependencies.sh || quit "Error installing dependencies"
 
   echo "Adding deeprotor CLI to profile"
   source_from_profile $DEEPROTOR_CLI
@@ -96,4 +89,4 @@ source_from_profile() {
   fi
 }
 
-deeprotor $@
+deeprotor-guest $@

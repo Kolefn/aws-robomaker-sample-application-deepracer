@@ -2,13 +2,14 @@
 
 source $(dirname $BASH_SOURCE)/deeprotor-common.sh
 
-deeprotor() {
+deeprotor-host() {
   case "$1" in
     ""|help)
       echo "Usage: deeprotor setup|cd|up|ssh|halt"
       ;;
     setup)
-      setup
+      shift
+      setup $@
       ;;
     destroy)
       echo "Use `vagrant destroy` if you really want to destroy this VM"
@@ -16,20 +17,23 @@ deeprotor() {
       ;;
     *)
       # Forward everything else to vagrant
+      export_env_and_creds
       vagrant $@
       ;;
   esac
 }
 
 setup() {
+  local profile=${1:-~/.bash_profile}
+
   [ -z "$(which VBoxManage)" ] && \
       quit "VBoxManage not on path. Is Virtualbox installed?"  
   [ -z "$(which vagrant)" ] && \
       quit "vagrant not on path. Is Vagrant installed?"
 
-  if ! grep -q "$DEEPROTOR_CLI" ~/.bash_profile; then
+  if ! grep -q "$DEEPROTOR_CLI" $profile; then
     echo "Adding deeprotor command to profile"
-    printf "\nsource $DEEPROTOR_CLI\n" >> ~/.bash_profile
+    printf "\nsource $DEEPROTOR_CLI\n" >> $profile
   fi
 
   if [ ! -e .env ]; then
@@ -39,12 +43,12 @@ setup() {
 
   echo "Installing Vagrant plugins"
   vagrant plugin list | grep -q vagrant-vbguest || \
-      vagrant plugin install vagrant-vbguest
+      sudo vagrant plugin install vagrant-vbguest
   vagrant plugin list | grep -q vagrant-disksize || \
-      vagrant plugin install vagrant-disksize
+      sudo vagrant plugin install vagrant-disksize
 
   echo "Bringing up VM"
   vagrant up
 }
 
-deeprotor $@
+deeprotor-host $@

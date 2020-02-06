@@ -11,8 +11,8 @@ Vagrant.configure("2") do |config|
   config.disksize.size='50GB'
 
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = 8192
-    vb.cpus = 4
+    vb.memory = ENV["RAM_MB"] ? ENV["RAM_MB"] : 4096
+    vb.cpus = ENV["NUM_CPUS"] ? ENV["NUM_CPUS"] : 2
   end
 
   config.vm.provision "deps", type: "shell", inline: <<-SHELL
