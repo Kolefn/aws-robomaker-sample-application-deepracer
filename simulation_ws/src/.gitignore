@@ -1,0 +1,7 @@
+mav_comm
+mavlink
+mavros
+rotors_simulator
+.rosinstall
+.rosinstall.bak
+rotors_hil.rosinstall
