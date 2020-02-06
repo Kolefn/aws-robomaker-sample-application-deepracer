@@ -8,9 +8,6 @@ ROS_BASE_SETUP=/opt/ros/kinetic/setup.bash
 # Configures roslaunch to use the built project, including the base setup.
 ROS_RUN_SETUP=$DEEPROTOR_ROOT/simulation_ws/install/setup.bash
 
-export DISPLAY=:$XDISPLAY
-export XAUTHORITY=~/.Xauthority
-
 deeprotor-guest() {
   case "$1" in
     setup)
