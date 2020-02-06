@@ -13,6 +13,13 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |vb|
     vb.memory = ENV["RAM_MB"] ? ENV["RAM_MB"] : 4096
     vb.cpus = ENV["NUM_CPUS"] ? ENV["NUM_CPUS"] : 2
+
+    vb.customize [
+      "modifyvm", :id,
+      "--accelerate3d", "on",
+      "--graphicscontroller", "vmsvga",
+      "--vram", "128"
+    ]
   end
 
   config.vm.provision "deps", type: "shell", inline: <<-SHELL
