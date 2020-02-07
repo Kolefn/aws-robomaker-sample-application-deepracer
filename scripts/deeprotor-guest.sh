@@ -21,6 +21,9 @@ deeprotor-guest() {
       shift
       launch-simulation evaluate $@ 
       ;;
+    run-gui)
+      run_gui
+      ;;
     build-local)
       shift
       build_local $@
@@ -30,20 +33,60 @@ deeprotor-guest() {
       refresh_creds $@ 
       ;;
     *)
-      echo "Usage: deeprotor train-local|build-local|refresh-creds|cd|setup"
+      echo "Usage: deeprotor cd|setup|refresh-creds|build-local|train-local||run-gui"
       ;;
   esac
 }
 
-launch-simulation() {
+# Sources and exports variables necessary to run the GUI or simulation.
+export_run_env() {
   export_env_and_creds
   source $ROS_RUN_SETUP
+  export DISPLAY=":$XDISPLAY_NUM"
+  export XAUTHORITY="$XAUTHORITY_PATH"
+}
 
+launch-simulation() {  
+  export_run_env
+  start_gui
   if [ "$2" == "--verbose" ]; then
     roslaunch -v deeprotor_simulation $1.launch verbose:=true
   else
     roslaunch deeprotor_simulation $1.launch
   fi
+}
+
+# Start a headless X server running an LXQT desktop
+run_Xvfb() {
+  xvfb-run \
+    --server-num=$XDISPLAY_NUM \
+    --auth-file=$XAUTHORITY \
+    --server-args="-screen 0 ${SCREEN_WIDTH}x${SCREEN_HEIGHT}x24" \
+    startlxqt
+}
+
+# Start a VNC server accessible without a password at localhost:5900
+run_x11vnc() {
+  x11vnc \
+    -auth $XAUTHORITY \
+    -display $DISPLAY \
+    -nevershared \
+    -loop \
+    -forever
+}
+
+# Start the GUI in the background and kill it when the shell exits 
+start_gui() {
+  trap 'kill $(jobs -p)' EXIT
+  run_Xvfb &
+  run_x11vnc &
+}
+
+# Standalone command to start the gui
+run_gui() {
+  export_run_env
+  start_gui
+  tail -f /dev/null
 }
 
 build_local() {

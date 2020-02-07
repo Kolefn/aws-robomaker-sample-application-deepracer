@@ -28,12 +28,7 @@ To build the simulation, run these commands
 5. `deeprotor ssh` (use `deeprotor up` if the VM is not already on)
 6. (In the ssh session) `deeprotor build-local`
 
-The virtual camera sensor requires a running X server, and the easiset way to get that is to run the training and evaluation commands in a GUI terminal. Deepracer installs a GUI. To finish setup
-
-7. `deepracer halt` from the host to stop the VM
-8. Open the VM's settings through the VirutalBox GUI, go to display, increase the video RAM and enable 3d acceleration.
-9. Select `VMSVGA` as the graphics driver. Gazebo appears to be unstable with `VboxVGA`.
-10. `deepracer up` to start the VM. You should now be able to access the VM GUI from the VirtualBox GUI 
+Deeprotor also installs a desktop environment. This is required for training, evaluation, and inspecting the simulation through the Gazebo UI. The desktop is started automatically when needed but can also be run manually with `deeprotor run-gui`. Once started, you can access the GUI over VNC at `localhost:5900` on the host. [VNC Connect](https://www.realvnc.com/en/connect/download/viewer/) is the recommended VNC client.
 
 ### AWS Account Setup
 
