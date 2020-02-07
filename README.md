@@ -13,7 +13,7 @@ Keywords: Reinforcement learning, AWS, RoboMaker, Drone
 - An AWS S3 bucket - To store the trained reinforcement learning model
 
 ## Get Started
-1. Install Vagrant and Virtualbox
+1. Install [Vagrant](https://www.vagrantup.com/docs/installation/) and [Virtualbox](https://www.virtualbox.org/wiki/Downloads)
 
 Run these commands from your host machine
 
@@ -27,6 +27,13 @@ To build the simulation, run these commands
 
 5. `deeprotor ssh` (use `deeprotor up` if the VM is not already on)
 6. (In the ssh session) `deeprotor build-local`
+
+The virtual camera sensor requires a running X server, and the easiset way to get that is to run the training and evaluation commands in a GUI terminal. Deepracer installs a GUI. To finish setup
+
+7. `deepracer halt` from the host to stop the VM
+8. Open the VM's settings through the VirutalBox GUI, go to display, increase the video RAM and enable 3d acceleration.
+9. Select `VMSVGA` as the graphics driver. Gazebo appears to be unstable with `VboxVGA`.
+10. `deepracer up` to start the VM. You should now be able to access the VM GUI from the VirtualBox GUI 
 
 ### AWS Account Setup
 

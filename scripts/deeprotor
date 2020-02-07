@@ -5,7 +5,7 @@
 # From your host machine, run `deeprotor setup` to add the deeprotor command to your
 # profile, create the VM, and install project dependencies.
 
-source $(realpath $(dirname $BASH_SOURCE))/deeprotor-paths.sh
+source $(dirname $BASH_SOURCE)/deeprotor-paths.sh
 
 deeprotor() {
   case "$1" in
