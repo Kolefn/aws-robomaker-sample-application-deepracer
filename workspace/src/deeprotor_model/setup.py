@@ -3,7 +3,7 @@
 from setuptools import setup, find_packages
 
 # Package meta-data.
-NAME = 'sagemaker_rl_agent'
+NAME = 'deeprotor_model'
 REQUIRES_PYTHON = '>=3.5.0'
 
 setup(

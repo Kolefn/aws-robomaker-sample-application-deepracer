@@ -5,7 +5,7 @@
 
 ubuntu*log
 
-simulation_ws/build
-simulation_ws/bundle
-simulation_ws/install
-simulation_ws/log
+workspace/build
+workspace/bundle
+workspace/install
+workspace/log

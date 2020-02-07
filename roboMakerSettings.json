@@ -4,7 +4,7 @@
       "name": "DeepRotor Simulation",
       "type": "colcon build",
       "cfg": {
-        "workingDir": "./DeepRotor/simulation_ws",
+        "workingDir": "./DeepRotor/workspace",
         "cmdArgs": ""
       }
     }, {
@@ -12,7 +12,7 @@
       "name": "DeepRotor Simulation",
       "type": "colcon bundle",
       "cfg": {
-        "workingDir": "./DeepRotor/simulation_ws",
+        "workingDir": "./DeepRotor/workspace",
         "cmdArgs": ""
       }
     }, {
@@ -23,7 +23,7 @@
         "simulationApp": {
           "name": "RoboMakerDeepRotorSimulation",
           "s3Bucket": "<bucket name for your simulation bundle>",
-          "sourceBundleFile": "./DeepRotor/simulation_ws/bundle/output.tar",
+          "sourceBundleFile": "./DeepRotor/workspace/bundle/output.tar",
           "architecture": "X86_64",
           "launchConfig": {
             "packageName": "deeprotor_simulation",
@@ -69,7 +69,7 @@
         "simulationApp": {
           "name": "RoboMakerDeepRotorSimulation",
           "s3Bucket": "<bucket name for your simulation bundle>",
-          "sourceBundleFile": "./DeepRotor/simulation_ws/bundle/output.tar",
+          "sourceBundleFile": "./DeepRotor/workspace/bundle/output.tar",
           "architecture": "X86_64",
           "launchConfig": {
             "packageName": "deeprotor_simulation",

@@ -6,7 +6,7 @@ source $(dirname $BASH_SOURCE)/deeprotor-common.sh
 ROS_BASE_SETUP=/opt/ros/kinetic/setup.bash
 
 # Configures roslaunch to use the built project, including the base setup.
-ROS_RUN_SETUP=$DEEPROTOR_ROOT/simulation_ws/install/setup.bash
+ROS_RUN_SETUP=$DEEPROTOR_ROOT/workspace/install/setup.bash
 
 deeprotor-guest() {
   case "$1" in
@@ -91,7 +91,7 @@ run_gui() {
 
 build_local() {
   source $ROS_BASE_SETUP
-  cd simulation_ws
+  cd workspace
   colcon build $@ 
 }
 

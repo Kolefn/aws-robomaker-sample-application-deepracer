@@ -15,17 +15,17 @@ setup:
 build: build_simulation
 
 build_simulation:
-	scripts/build.sh ./simulation_ws
+	scripts/build.sh ./workspace
 
 bundle: bundle_simulation
 
 bundle_simulation: build_simulation
-	scripts/bundle.sh ./simulation_ws
+	scripts/bundle.sh ./workspace
 
 clean: clean_simulation_build clean_simulation_bundle
 
 clean_simulation_build:
-	rm -rf ./simulation_ws/build ./simulation_ws/install
+	rm -rf ./workspace/build ./workspace/install
 
 clean_simulation_bundle:
-	rm -rf ./simulation_ws/bundle
+	rm -rf ./workspace/bundle
