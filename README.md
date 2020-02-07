@@ -1,6 +1,6 @@
 # [Cantina](https://cantina.co/) DeepRotor 🚁
 
-#### _We essentially replaced the car in AWS DeepRacer with a quadrotor UAV (drone)._
+#### _We essentially replaced the car in [AWS DeepRacer](https://aws.amazon.com/deepracer/) with a quadrotor UAV (drone)._
 
 ## [Introduction](https://github.com/Kolefn/cantina-deeprotor/wiki/Introduction)
 
