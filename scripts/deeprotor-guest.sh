@@ -50,9 +50,9 @@ launch-simulation() {
   export_run_env
   start_gui
   if [ "$2" == "--verbose" ]; then
-    roslaunch -v deeprotor_simulation $1.launch verbose:=true
+    roslaunch -v $SIMULATION_PACKAGE $1.launch verbose:=true
   else
-    roslaunch deeprotor_simulation $1.launch
+    roslaunch $SIMULATION_PACKAGE $1.launch
   fi
 }
 

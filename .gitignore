@@ -3,7 +3,8 @@
 /log/
 
 .creds
-.env
+.env*
+!.env.default
 
 ubuntu*log
 
