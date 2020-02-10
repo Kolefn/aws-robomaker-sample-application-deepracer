@@ -1,5 +1,7 @@
 .vagrant
 
+/log/
+
 .creds
 .env
 

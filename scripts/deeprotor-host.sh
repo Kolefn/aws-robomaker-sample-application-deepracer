@@ -15,6 +15,10 @@ deeprotor-host() {
       echo "Use `vagrant destroy` if you really want to destroy this VM"
       return
       ;;
+    refresh-creds)
+      shift
+      refresh_creds $@ 
+      ;;
     *)
       # Forward everything else to vagrant
       export_env_and_creds
@@ -51,4 +55,4 @@ setup() {
   vagrant up
 }
 
-deeprotor-host $@
+log deeprotor-host $@
