@@ -50,9 +50,9 @@ launch-simulation() {
   export_run_env
   start_gui
   if [ "$2" == "--verbose" ]; then
-    roslaunch -v deeprotor_simulation $1.launch verbose:=true
+    roslaunch -v $SIMULATION_PACKAGE $1.launch verbose:=true
   else
-    roslaunch deeprotor_simulation $1.launch
+    roslaunch $SIMULATION_PACKAGE $1.launch
   fi
 }
 
@@ -92,21 +92,7 @@ run_gui() {
 build_local() {
   source $ROS_BASE_SETUP
   cd simulation_ws
-  colcon build $@ 
-}
-
-refresh_creds() {
-  local profile=${1:-default}
-
-  [ "$(aws configure get output --profile $profile)" == "text" ] || \
-      quit "Add 'output = text' to your profile at ~/.aws/config"
-
-  aws sts get-session-token --duration-seconds 129600 --profile $profile | \
-  awk '{ 
-    print "AWS_ACCESS_KEY_ID=" $2; 
-    print "AWS_SECRET_ACCESS_KEY=" $4;
-    print "AWS_SESSION_TOKEN=" $5;
-  }' > .creds
+  colcon build --symlink-install $@ 
 }
 
 setup() {
@@ -132,4 +118,4 @@ source_from_profile() {
   fi
 }
 
-deeprotor-guest $@
+log deeprotor-guest $@
