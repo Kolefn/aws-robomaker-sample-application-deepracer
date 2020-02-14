@@ -1,0 +1,3 @@
+[submodule "racer"]
+	path = racer
+	url = https://github.com/Kolefn/cantina-deeprotor.git
