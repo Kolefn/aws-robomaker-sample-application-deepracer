@@ -39,16 +39,22 @@ deeprotor-guest() {
 }
 
 # Sources and exports variables necessary to run the GUI or simulation.
-export_run_env() {
+setup_run_env() {
   export_env_and_creds
   source $ROS_RUN_SETUP
-  export DISPLAY=":$XDISPLAY_NUM"
-  export XAUTHORITY="$XAUTHORITY_PATH"
+
+  if [ -z "$DISPLAY" ]; then
+    echo "Starting display"
+    export DISPLAY=":$XDISPLAY_NUM"
+    export XAUTHORITY="$XAUTHORITY_PATH"
+    start_gui
+  else
+    echo "Found existing display"
+  fi
 }
 
 launch-simulation() {  
-  export_run_env
-  start_gui
+  setup_run_env
   if [ "$2" == "--verbose" ]; then
     roslaunch -v $SIMULATION_PACKAGE $1.launch verbose:=true
   else
@@ -84,8 +90,7 @@ start_gui() {
 
 # Standalone command to start the gui
 run_gui() {
-  export_run_env
-  start_gui
+  setup_run_env
   tail -f /dev/null
 }
 
