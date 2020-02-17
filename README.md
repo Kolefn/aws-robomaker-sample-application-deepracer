@@ -1,3 +1,13 @@
+# Deepracer on DeepRotor
+
+This branch trains the original deepracer simulation on the local setup we developed for deeprotor. To set it up:
+
+1. `git checkout racer-on-rotor`
+2. `git submodule update --init`
+3. If you haven't yet run `deeprotor setup`, run that now. Otherwise, log into the VM with `deeprotor ssh` then run `source scripts/setup_dependencies.sh`
+4. `deeprotor build-local`
+5. `deeprotor train-local`
+
 # [Cantina](https://cantina.co/) DeepRotor 🚁
 
 #### _We essentially replaced the car in [AWS DeepRacer](https://aws.amazon.com/deepracer/) with a quadrotor UAV (drone)._
