@@ -55,11 +55,26 @@ setup_run_env() {
 
 launch-simulation() {  
   setup_run_env
-  if [ "$2" == "--verbose" ]; then
-    roslaunch -v $SIMULATION_PACKAGE $1.launch verbose:=true
-  else
-    roslaunch $SIMULATION_PACKAGE $1.launch
-  fi
+  
+  local launch="roslaunch"
+  local launch_opts=""
+  local sim=$1
+  shift
+
+  while [[ "$1" =~ ^-- && ! "$1" == "--" ]]; do case $1 in
+    --verbose)
+      launch_opts="$launch_opts verbose:=true"
+      launch="roslaunch -v"
+      ;;
+    --gui)
+      launch_opts="$launch_opts gui:=true"
+      ;;
+    *)
+      echo "Unrecognized option $1"
+      exit 1
+  esac; shift; done
+
+  $launch $SIMULATION_PACKAGE $sim.launch $launch_opts
 }
 
 # Start a headless X server running an LXQT desktop
