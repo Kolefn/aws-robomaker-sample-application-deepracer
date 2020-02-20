@@ -2,6 +2,7 @@
 <launch>
     <arg name="gui" default="false" />
     <arg name="verbose" default="false"/>
+    <arg name="restore_from_checkpoint" default="false"/>
 
     <param name="WORLD_NAME" value="$(env WORLD_NAME)" />
     <param name="MODEL_S3_BUCKET" value="$(env MODEL_S3_BUCKET)" />
@@ -15,5 +16,5 @@
          <arg name="verbose" default="$(arg verbose)"/>
     </include>
 
-    <node name="agent" pkg="deeprotor_simulation" type="run_local_rl_agent.sh" output="screen" required="true"/>
+    <node name="agent" pkg="deeprotor_simulation" type="run_local_rl_agent.sh" output="screen" required="true" args="$(arg restore_from_checkpoint)"/>
 </launch>

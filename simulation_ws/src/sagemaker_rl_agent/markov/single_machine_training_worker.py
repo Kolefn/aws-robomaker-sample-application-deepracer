@@ -22,12 +22,13 @@ if not os.path.exists(CUSTOM_FILES_PATH):
     os.makedirs(CUSTOM_FILES_PATH)
 
 
-def start_graph(graph_manager: 'GraphManager', task_parameters: 'TaskParameters'):
+def start_graph(graph_manager: 'GraphManager', task_parameters: 'TaskParameters', restore_from_checkpoint: 'bool'):
     graph_manager.create_graph(task_parameters)
 
-    # save randomly initialized graph
-    graph_manager.save_checkpoint()
-
+    if not restore_from_checkpoint:
+        # save randomly initialized graph
+        graph_manager.save_checkpoint()
+    
     # Start the training
     graph_manager.improve()
 
@@ -46,10 +47,10 @@ def main():
                         help="(string) Name of a preset file to run in Markov's preset directory.",
                         type=str,
                         default=os.environ.get("MARKOV_PRESET_FILE", "object_tracker.py"))
-    parser.add_argument('-c', '--local_model_directory',
-                        help='(string) Path to a folder containing a checkpoint to restore the model from.',
+    parser.add_argument('-c', '--checkpoint-save-dir',
+                        help='(string) Path to a folder for saved checkpoints.',
                         type=str,
-                        default=os.environ.get("LOCAL_MODEL_DIRECTORY", "./checkpoint"))
+                        default=os.environ.get("CHECKPOINT_SAVE_DIR", "./checkpoint"))
     parser.add_argument('-n', '--num_workers',
                         help="(int) Number of workers for multi-process based agents, e.g. A3C",
                         default=1,
@@ -74,6 +75,14 @@ def main():
                         help="(bool) True if we need to store the frozen graph",
                         type=bool,
                         default=True)
+    parser.add_argument('--restore-from-checkpoint',
+                        help="(bool) True if you want to start training from a local checkpoint",
+                        type=bool,
+                        default=False)
+    parser.add_argument('--checkpoint-restore-dir',
+                        help='(string) Path to a folder containing a checkpoint to restore the model from.',
+                        type=str,
+                        default=os.environ.get("CHECKPOINT_RESTORE_DIR", "./checkpoint"))
 
     args = parser.parse_args()
 
@@ -89,12 +98,15 @@ def main():
     # TODO: support other frameworks
     task_parameters = TaskParameters(framework_type=Frameworks.tensorflow,
                                      checkpoint_save_secs=args.checkpoint_save_secs)
-    task_parameters.__dict__['checkpoint_save_dir'] = args.local_model_directory
+    if args.restore_from_checkpoint:
+        task_parameters.__dict__['checkpoint_restore_dir'] = args.checkpoint_restore_dir
+
+    task_parameters.__dict__['checkpoint_save_dir'] = args.checkpoint_save_dir
     task_parameters.__dict__ = add_items_to_dict(task_parameters.__dict__, args.__dict__)
 
     data_store_params_instance = S3BotoDataStoreParameters(bucket_name=args.model_s3_bucket,
                                                            s3_folder=args.model_s3_prefix,
-                                                           checkpoint_dir=args.local_model_directory,
+                                                           checkpoint_dir=args.checkpoint_save_dir,
                                                            aws_region=args.aws_region)
     data_store = S3BotoDataStore(data_store_params_instance)
 
@@ -104,7 +116,7 @@ def main():
     graph_manager.data_store_params = data_store_params_instance
     graph_manager.data_store = data_store
     graph_manager.should_stop = should_stop_training_based_on_evaluation
-    start_graph(graph_manager=graph_manager, task_parameters=task_parameters)
+    start_graph(graph_manager=graph_manager, task_parameters=task_parameters, restore_from_checkpoint=args.restore_from_checkpoint)
 
 
 if __name__ == '__main__':
