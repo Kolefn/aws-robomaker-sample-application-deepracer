@@ -46,14 +46,24 @@ export_run_env() {
   export XAUTHORITY="$XAUTHORITY_PATH"
 }
 
-launch-simulation() {  
+launch-simulation(){
   export_run_env
   start_gui
-  if [ "$2" == "--verbose" ]; then
-    roslaunch -v $SIMULATION_PACKAGE $1.launch verbose:=true
-  else
-    roslaunch $SIMULATION_PACKAGE $1.launch
-  fi
+  
+  gazebo_verbose='false'
+  gazebo_gui='false'
+  restore='false'
+  OPTIND=2
+  while getopts 'vgr' flag; do
+    case "${flag}" in
+      v) gazebo_verbose='true' ;;
+      g) gazebo_gui='true' ;;
+      r) restore='true' ;;
+      *) echo "-v (enable verbose gazebo logs) -g (enable gazebo gui) -r (restore the model using the last checkpoint)" ;;
+    esac
+  done
+
+  roslaunch -v $SIMULATION_PACKAGE $1.launch verbose:=$gazebo_verbose gui:=$gazebo_gui restore_from_checkpoint:=$restore
 }
 
 # Start a headless X server running an LXQT desktop
