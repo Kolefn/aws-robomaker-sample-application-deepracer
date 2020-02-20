@@ -98,7 +98,7 @@ class S3BotoDataStore(DataStore):
                         s3_client.delete_object(Bucket=self.params.bucket,
                                                 Key=obj["Key"])
                         num_files += 1
-
+                    utils.delete_local_checkpoint(self.params.checkpoint_dir, checkpoint_number_to_delete)
                     print("Deleted %s model files from S3" % num_files)
                     return True
         except Exception as e:

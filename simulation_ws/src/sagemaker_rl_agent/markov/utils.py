@@ -1,4 +1,4 @@
-import os
+import os, glob
 import logging
 import time
 
@@ -35,6 +35,11 @@ def wait_for_checkpoint(checkpoint_dir, data_store=None, retries=10):
         retries=retries,
         checkpoint_dir=checkpoint_dir,
     ))
+
+def delete_local_checkpoint(checkpoint_dir, checkpoint_num):
+    for filename in glob.glob(checkpoint_dir + "/" + str(checkpoint_num) + "_*"):
+        print("deleting checkpoint file" + filename)
+        os.remove(filename) 
 
 def write_frozen_graph(graph_manager, local_path):
     if not os.path.exists(local_path):
