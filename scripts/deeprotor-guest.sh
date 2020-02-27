@@ -48,7 +48,7 @@ export_run_env() {
 
 launch-simulation(){
   export_run_env
-  start_gui
+  # start_gui
   
   gazebo_verbose='false'
   gazebo_gui='false'

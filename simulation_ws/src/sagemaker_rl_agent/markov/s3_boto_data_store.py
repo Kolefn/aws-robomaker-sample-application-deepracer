@@ -45,11 +45,21 @@ class S3BotoDataStore(DataStore):
 
     def save_to_store(self):
         try:
-            s3_client = self._get_client()
 
             if self.graph_manager:
                 utils.write_frozen_graph(self.graph_manager, self.params.checkpoint_dir)
 
+            checkpoint = self._get_current_checkpoint()
+            if checkpoint:
+                checkpoint_number = self._get_checkpoint_number(checkpoint)
+                checkpoint_number_to_delete = checkpoint_number - 4
+                if checkpoint_number_to_delete >= 0:
+                    utils.delete_local_checkpoint(self.params.checkpoint_dir, checkpoint_number_to_delete)
+
+            return;
+            
+            s3_client = self._get_client()
+            
             # Delete any existing lock file
             s3_client.delete_object(Bucket=self.params.bucket, Key=self._get_s3_key(self.params.lock_file))
 

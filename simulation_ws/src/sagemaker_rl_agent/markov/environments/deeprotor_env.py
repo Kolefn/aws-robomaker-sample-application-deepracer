@@ -11,6 +11,7 @@ from gym import spaces
 from PIL import Image
 import os
 import math
+import random
 
 # Type of worker
 SIMULATION_WORKER = "SIMULATION_WORKER"
@@ -24,7 +25,7 @@ if node_type == SIMULATION_WORKER:
     from gazebo_msgs.srv import SetModelState, GetModelState
     from scipy.spatial.transform import Rotation
     from sensor_msgs.msg import Image as sensor_image
-    from mav_msgs.msg import Actuators
+    from mav_msgs.msg import RollPitchYawrateThrust
 
 TRAINING_IMAGE_SIZE = (160, 120)
 
@@ -33,11 +34,21 @@ SLEEP_AFTER_RESET_TIME_IN_SECOND = 0.5
 SLEEP_BETWEEN_ACTION_AND_REWARD_CALCULATION_TIME_IN_SECOND = 0.1
 SLEEP_WAITING_FOR_IMAGE_TIME_IN_SECOND = 0.01
 
-CRASHED = -10000
+MAX_NUM_STEPS_PER_EPISODE = 100
 WORLD_BOUND_X = 15
 WORLD_BOUND_Y = 15
 WORLD_BOUND_Z = 15
-NO_LIFT = [0,0,0,0]
+RESET_ACTION = [0,0,0,0]
+
+DEG_TO_RAD = math.pi / 180.0
+
+FULL_ROTATION = 360 * DEG_TO_RAD
+
+MAX_ROLL = 10.0 * DEG_TO_RAD
+MAX_PITCH = 10.0 * DEG_TO_RAD
+MAX_YAW_RATE = 45.0 * DEG_TO_RAD
+MAX_THRUST = 10.0
+
 
 
 ### Gym Env ###
@@ -71,7 +82,7 @@ class DeepRotorEnv(gym.Env):
             rospy.wait_for_service('/gazebo/set_model_state')
             self.get_model_service = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
             self.set_model_service = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
-            self.velocity_publisher = rospy.Publisher("/drone/command/motor_speed", Actuators, queue_size=1)
+            self.control_publisher = rospy.Publisher("/drone/command/roll_pitch_yawrate_thrust", RollPitchYawrateThrust, queue_size=1)
 
             rospy.init_node('rl_coach', anonymous=True)
 
@@ -84,9 +95,7 @@ class DeepRotorEnv(gym.Env):
     def reset(self):
         if node_type == SAGEMAKER_TRAINING_WORKER:
             return self.observation_space.sample()
-        print('Total Reward=%.2f' % self.reward_in_episode,
-              'Total Steps=%.2f' % self.steps)
-        self.send_reward_to_cloudwatch(self.reward_in_episode)
+        # self.send_reward_to_cloudwatch(self.reward_in_episode)
 
         self.reward_in_episode = 0
         self.reward = None
@@ -95,16 +104,21 @@ class DeepRotorEnv(gym.Env):
         self.image = None
         self.steps = 0
 
+        self.start_x = random.randint(-WORLD_BOUND_X,WORLD_BOUND_X)
+        self.start_y = random.randint(-WORLD_BOUND_Y, WORLD_BOUND_Y)
+
         # Reset drone in Gazebo
-        self.send_action(NO_LIFT)  # set rotor velocities to zero
+        self.send_action(RESET_ACTION)
         self.drone_reset()
 
-        self.infer_reward_state(NO_LIFT)
+        self.infer_reward_state(RESET_ACTION)
         return self.next_state
 
     def drone_reset(self):
         modelState = ModelState()
-        modelState.pose.position.z = 0
+        modelState.pose.position.x = self.start_x
+        modelState.pose.position.y = self.start_y
+        modelState.pose.position.z = self.start_z
         modelState.pose.orientation.x = 0
         modelState.pose.orientation.y = 0
         modelState.pose.orientation.z = 0
@@ -130,7 +144,9 @@ class DeepRotorEnv(gym.Env):
         self.next_state = None
 
         self.steps += 1
+
         self.send_action(action)
+
         time.sleep(SLEEP_BETWEEN_ACTION_AND_REWARD_CALCULATION_TIME_IN_SECOND)
         self.infer_reward_state(action)
 
@@ -141,9 +157,12 @@ class DeepRotorEnv(gym.Env):
         self.image = data
 
     def send_action(self, action):
-        msg = Actuators()
-        msg.angular_velocities = action
-        self.velocity_publisher.publish(msg)
+        msg = RollPitchYawrateThrust()
+        msg.roll = action[0]
+        msg.pitch = action[1]
+        msg.yaw_rate = action[2]
+        msg.thrust.z = action[3]
+        self.control_publisher.publish(msg)
 
     def exp_decay(self, x):
         return 0.1 ** (2*x)
@@ -157,9 +176,12 @@ class DeepRotorEnv(gym.Env):
         y = params['y']
         z = params['z']
 
+        if abs(z - params['start_z']) <= 0.01:
+            return 0
+
         ideal_x = params['start_x']
         ideal_y = params['start_y']
-        ideal_z = target_z * 1.5
+        ideal_z = WORLD_BOUND_Z / 2 # target_z
 
         x_bound = params['x_bound']
         y_bound = params['y_bound']
@@ -177,24 +199,24 @@ class DeepRotorEnv(gym.Env):
         axis_weight = 0.333
         factor_x = self.exp_decay(norm_dist_x) * axis_weight
         factor_y = self.exp_decay(norm_dist_y) * axis_weight
-        factor_z = self.exp_decay(norm_dist_z) * axis_weight
+        factor_z = 1 - norm_dist_z
 
-        reward = factor_x + factor_y + factor_z
+        reward = factor_z
 
         return float(reward)
 
     def infer_reward_state(self, action):
-        # Wait till we have a image from the camera
-        while not self.image:
-            time.sleep(SLEEP_WAITING_FOR_IMAGE_TIME_IN_SECOND)
+        # # Wait till we have a image from the camera
+        # while not self.image:
+        #     time.sleep(SLEEP_WAITING_FOR_IMAGE_TIME_IN_SECOND)
 
-        # Camera spits out BGR images by default. Converting to the
-        # image to RGB.
-        image = Image.frombytes('RGB', (self.image.width, self.image.height),
-                                self.image.data, 'raw', 'BGR', 0, 1)
-        # resize image ans perform anti-aliasing
-        image = image.resize(TRAINING_IMAGE_SIZE, resample=2).convert("RGB")
-        state = np.array(image)
+        # # Camera spits out BGR images by default. Converting to the
+        # # image to RGB.
+        # image = Image.frombytes('RGB', (self.image.width, self.image.height),
+        #                         self.image.data, 'raw', 'BGR', 0, 1)
+        # # resize image ans perform anti-aliasing
+        # image = image.resize(TRAINING_IMAGE_SIZE, resample=2).convert("RGB")
+        # state = np.array(image)
 
         done = False
 
@@ -208,13 +230,15 @@ class DeepRotorEnv(gym.Env):
         model_y = model_state.pose.position.y
         model_z = model_state.pose.position.z
 
-        model_flipped = abs(model_orientation[1]) >= 2.0 or abs(model_orientation[2]) >= 2.0
+        # state = np.array([model_x, model_y, model_z, model_orientation[0] % FULL_ROTATION, model_orientation[1] % FULL_ROTATION, model_orientation[2] % FULL_ROTATION])
+        state = np.array([model_z])
+
+        # model_flipped = abs(model_orientation[1]) >= 2.0 or abs(model_orientation[2]) >= 2.0
         model_out_of_bound = (abs(model_x) >= WORLD_BOUND_X) or (abs(model_y) >= WORLD_BOUND_Y) or (abs(model_z) >= WORLD_BOUND_Z)
-        model_crashed = model_flipped or model_out_of_bound
+        model_crashed = model_out_of_bound
 
         reward = 0
         if model_crashed:
-            reward = CRASHED / self.steps
             done = True
         else:
             done = False
@@ -239,9 +263,9 @@ class DeepRotorEnv(gym.Env):
                 'steps': self.steps,
             }
             reward = self.reward_function(params)
-
-        print('Step: %.2f' % self.steps,
-              'Reward: %.2f' % reward)
+        
+        if self.steps >= MAX_NUM_STEPS_PER_EPISODE:
+            done = True
 
         self.reward_in_episode += reward
         self.reward = reward
@@ -266,23 +290,44 @@ class DeepRotorDiscreteEnv(DeepRotorEnv):
     def __init__(self):
         DeepRotorEnv.__init__(self)
 
-        velocity_range_min = 455
-        velocity_range_max = 460
-        velocity_value_increment = 5
+        self.actions = self.create_discrete_actions()
 
-        velocity_values = []
-        for i in range(0, velocity_range_max - velocity_range_min + 1, velocity_value_increment):
-            velocity_values.append(velocity_range_min+i)
-        
-        #from itertools import product 
-        #velocity_sets = [list(item) for item in product(velocity_values, repeat=4)]
-        self.velocity_sets = [[value, value, value, value] for value in velocity_values] 
+        # self.observation_space = spaces.Box(low=np.array([-WORLD_BOUND_X, -WORLD_BOUND_Y, -WORLD_BOUND_Z, -FULL_ROTATION, -FULL_ROTATION, -FULL_ROTATION]), high=np.array([WORLD_BOUND_X, WORLD_BOUND_Y, WORLD_BOUND_Z, FULL_ROTATION, FULL_ROTATION, FULL_ROTATION]), dtype=np.float32)
+        self.observation_space = spaces.Box(low=np.array([-WORLD_BOUND_Z]), high=np.array([WORLD_BOUND_Z]), dtype=np.float32)
 
-        # actions -> index withiin discrete list of rotor velocity sets
-        self.action_space = spaces.Discrete(len(self.velocity_sets))
+        # actions -> index within discrete list of rotor velocity sets
+        self.action_space = spaces.Discrete(len(self.actions))
+
+    def create_discrete_actions(self):
+        normal_mins = [0, 0, 0, 0]
+        normal_maxs = [0, 0, 0, 1.0]
+        normal_incs = [1.0, 1.0, 1.0, 0.05]  
+        normal_values = [[],[],[],[]]
+
+        for i in range(0, len(normal_values)):
+            n_min = normal_mins[i]
+            n_max = normal_maxs[i]
+            inc = normal_incs[i]
+            for j in range(0, int((n_max - n_min) / inc) + 1):
+                normal_values[i].append(n_min+(j*inc))
+
+        from itertools import product
+
+        action_tuples = product(*normal_values)
+
+        actions = []
+        for action_tuple in action_tuples:
+            action_list = list(action_tuple)
+            roll = action_list[0] * MAX_ROLL
+            pitch = action_list[1] * MAX_PITCH
+            yaw_rate = action_list[2] * MAX_YAW_RATE
+            thrust = action_list[3] * MAX_THRUST
+            actions.append([roll, pitch, yaw_rate, thrust])
+
+        return actions
 
     def step(self, action):
 
-        continous_action = self.velocity_sets[action]
+        continous_action = self.actions[action]
 
         return super().step(continous_action)

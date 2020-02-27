@@ -15,7 +15,7 @@
 
 
 <!-- zed camera -->
-<xacro:unless value="$(optenv DISABLE_GAZEBO_CAMERA false)">
+<xacro:unless value="$(optenv DISABLE_GAZEBO_CAMERA true)">
   <gazebo reference="camera_link">
     <sensor type="camera" name="zed_camera_left_sensor">
       <update_rate>15.0</update_rate>
